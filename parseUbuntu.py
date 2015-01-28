@@ -54,7 +54,7 @@ class MessageParser(object):
     SUMMARY = "Summary:"
     UPDATEINS = "Update instructions:"
     PKGINFO = "Package Information:"
-    ERRATA_SUBJECT="\[USN-(?P<errata_id>\d+)-\d+\] (?P<other_info>.*)"
+    ERRATA_SUBJECT="\[USN-(?P<errata_id>\d+-\d+)\] (?P<other_info>.*)"
     ERRATA_PKGS = "\s\s(?P<pkg_filename>.*)\s(?P<pkg_version>.*)"
     CVE = "(?P<cve>CVE-\d{4}-\d{4})"
 
