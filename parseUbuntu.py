@@ -250,6 +250,7 @@ def main():
             adv.set('product', 'Ubuntu Linux')
             adv.set('topic', 'N/A')
             adv.set('solution', 'N/A')
+            adv.set('notes', 'N/A')
             adv.set('type', advisory.errataType)
             adv.set('references', advisory.errataReferences.strip())
 
