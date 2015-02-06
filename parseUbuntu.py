@@ -1,6 +1,12 @@
 #!/usr/bin/python
 #
 # Author: philipp.schuler@holidaycheck.com
+# 
+# Changelog:
+# 
+# 2015-02-06 - Fixed bug when "Summary" missing in USN breaking import
+# 2015-01-28 - Fixed bug for USN with multiple sub-IDs breaking import 
+# 2014-10-31 - Initial working version 
 
 import email
 import re
@@ -86,6 +92,9 @@ class MessageParser(object):
 
             if summary_found:
                 summary += line + '\r'    
+
+    if summary == '': 
+            summary = 'Parsing description failed'
 
         return summary
 
