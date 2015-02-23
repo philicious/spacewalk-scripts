@@ -4,6 +4,7 @@
 # 
 # Changelog:
 # 
+# 2015-02-19 - Apply Reboot Information (C.Stehle)
 # 2015-02-10 - Fixed regression bug 
 # 2015-02-06 - Fixed bug when "Summary" missing in USN breaking import
 # 2015-01-28 - Fixed bug for USN with multiple sub-IDs breaking import 
@@ -25,6 +26,7 @@ class MessageAnnounce:
                  errata_synopsis=None,
                  errata_date=None,
                  errata_desc=None,
+                 errata_reboot=None,
                  msg_subject=None,
                  references=None):
         
@@ -37,6 +39,7 @@ class MessageAnnounce:
         self.errataSynopsis = errata_synopsis
         self.errataDate = errata_date
         self.errataDesc = errata_desc        
+        self.errataReboot = errata_reboot
         self.messageSubject = msg_subject
         self.errataReferences = references
 
@@ -73,6 +76,15 @@ class MessageParser(object):
     update_re = re.compile(UPDATEINS)
     pkginfo_re = re.compile(PKGINFO)
  
+    #parse reboot
+    def processMessageReboot(self, message_body):
+        reboot = ''
+
+        if message_body.find('reboot your computer') != -1:
+            reboot = 'reboot_suggested'
+
+        return reboot
+
     #parse the summary and details
     def processMessageSummary(self, message_body):
         summary = ''
@@ -197,6 +209,7 @@ class MessageParser(object):
             parsed_msg = self.processMessageSubject(erratum_subject)
             parsed_msg.packages = self.processPackageList(errataMsg.get_payload())
             parsed_msg.errataDesc = self.processMessageSummary(errataMsg.get_payload())
+            parsed_msg.errataReboot = self.processMessageReboot(errataMsg.get_payload())
             parsed_msg.errataReferences = self.processMessageReferences(errataMsg.get_payload())
             parsed_msg.cves = self.processMessageCVEs(errataMsg.get_payload())
 
@@ -261,6 +274,8 @@ def main():
             adv.set('topic', 'N/A')
             adv.set('solution', 'N/A')
             adv.set('notes', 'N/A')
+            if advisory.errataReboot != "":
+                adv.set('keywords', advisory.errataReboot)            
             adv.set('type', advisory.errataType)
             adv.set('references', advisory.errataReferences.strip())
 
