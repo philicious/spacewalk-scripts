@@ -1,20 +1,13 @@
 #!/usr/bin/python
 #
 # Author: philipp.schuler@holidaycheck.com
-# 
-# Changelog:
-# 
-# 2015-02-19 - Apply Reboot Information (C.Stehle)
-# 2015-02-10 - Fixed regression bug 
-# 2015-02-06 - Fixed bug when "Summary" missing in USN breaking import
-# 2015-01-28 - Fixed bug for USN with multiple sub-IDs breaking import 
-# 2014-10-31 - Initial working version 
 
 import email
 import re
 import traceback
 import sys
 import xml.etree.cElementTree as XML
+
 
 class MessageAnnounce:
 
@@ -26,9 +19,9 @@ class MessageAnnounce:
                  errata_synopsis=None,
                  errata_date=None,
                  errata_desc=None,
-                 errata_reboot=None,
                  msg_subject=None,
-                 references=None):
+                 references=None,
+		 errata_keyword=None):
         
         self.packages = {}
         self.cves = list()
@@ -39,9 +32,9 @@ class MessageAnnounce:
         self.errataSynopsis = errata_synopsis
         self.errataDate = errata_date
         self.errataDesc = errata_desc        
-        self.errataReboot = errata_reboot
         self.messageSubject = msg_subject
         self.errataReferences = references
+	self.errataKeyword = errata_keyword
 
     def getUSNUrl(self):
         usn_url = " http://www.ubuntu.com/usn/%s" % (self.errataID)
@@ -56,7 +49,12 @@ class MessagePackageInfo:
     def __init__(self,pkg_release,pkg_file,pkg_version):
         self.release = pkg_release
         self.filename = pkg_file
-        self.version = pkg_version
+
+        version_tmpArr = pkg_version.split('-')
+        if len(version_tmpArr) == 1:
+                self.version = pkg_version +"-X"
+        else:
+                self.version = pkg_version
 
 class MessageParser(object):
     RELEASE = "(?P<release>Ubuntu \d\d.\d\d LTS)"
@@ -67,6 +65,7 @@ class MessageParser(object):
     ERRATA_SUBJECT="\[USN-(?P<errata_id>\d+-\d+)\] (?P<other_info>.*)"
     ERRATA_PKGS = "\s\s(?P<pkg_filename>.*)\s(?P<pkg_version>.*)"
     CVE = "(?P<cve>CVE-\d{4}-\d{4})"
+    KEYWORD = "After a standard system update you need to reboot your computer to make"    
 
     erratum_subject_re = re.compile(ERRATA_SUBJECT)
     release_re = re.compile(RELEASE)
@@ -75,16 +74,8 @@ class MessageParser(object):
     summary_re = re.compile(SUMMARY)
     update_re = re.compile(UPDATEINS)
     pkginfo_re = re.compile(PKGINFO)
+    keyword_re = re.compile(KEYWORD)
  
-    #parse reboot
-    def processMessageReboot(self, message_body):
-        reboot = ''
-
-        if message_body.find('reboot your computer') != -1:
-            reboot = 'reboot_suggested'
-
-        return reboot
-
     #parse the summary and details
     def processMessageSummary(self, message_body):
         summary = ''
@@ -105,9 +96,6 @@ class MessageParser(object):
 
             if summary_found:
                 summary += line + '\r'    
-
-        if summary == '': 
-            summary = 'Parsing description failed'
 
         return summary
 
@@ -165,18 +153,19 @@ class MessageParser(object):
         for line in message_body.split('\n'):
             release_match = MessageParser.release_re.match(line)
             packagelist_match = MessageParser.packagelist_re.match(line)
+
             references_match = MessageParser.references_re.match(line)
 
             # if we ran over the packages, then stop
             if not references_match is None:
                 break
-
+	     
             if not release_match is None:            
                 current_release = release_match.group('release')
                 arch_packages[current_release]=list()
             elif not (current_release is None or packagelist_match is None):
                 arch_packages[current_release].append(MessagePackageInfo(current_release, packagelist_match.group('pkg_filename'), packagelist_match.group('pkg_version')))
-                     
+             
         return arch_packages
 
     #Construct the basic details about the errata from the message subject
@@ -193,7 +182,15 @@ class MessageParser(object):
         parsed_msg.errataSynopsis = erratum_subject_match.group('other_info')
 
         return parsed_msg
-                
+
+    def processKeyword(self, message_body):
+	keywordMatch = MessageParser.keyword_re.search(message_body)
+	
+	if not keywordMatch is None:
+		return "reboot_suggested"
+	
+	return "N/A"                
+
     #Processes an individual mailing list message and returns a messageAnnounce object or none if parsing failed
     #Really bad parsing errors lead to an exception
     def processMessage(self,message_text):        
@@ -205,16 +202,18 @@ class MessageParser(object):
             if erratum_subject is None:
                 return None
             
-            erratum_subject = stripNewLine.sub("",erratum_subject)            
+	    	erratum_subject = stripNewLine.sub("",erratum_subject)            
             parsed_msg = self.processMessageSubject(erratum_subject)
-            parsed_msg.packages = self.processPackageList(errataMsg.get_payload())
-            parsed_msg.errataDesc = self.processMessageSummary(errataMsg.get_payload())
-            parsed_msg.errataReboot = self.processMessageReboot(errataMsg.get_payload())
-            parsed_msg.errataReferences = self.processMessageReferences(errataMsg.get_payload())
-            parsed_msg.cves = self.processMessageCVEs(errataMsg.get_payload())
-
             if parsed_msg is None:
                 return None
+
+	    parsed_msg.packages = self.processPackageList(errataMsg.get_payload())
+            parsed_msg.errataDesc = self.processMessageSummary(errataMsg.get_payload())
+            parsed_msg.errataReferences = self.processMessageReferences(errataMsg.get_payload())
+            parsed_msg.cves = self.processMessageCVEs(errataMsg.get_payload())
+	    
+            if not parsed_msg.errataKeyword == 'reboot_suggested':
+		    parsed_msg.errataKeyword = self.processKeyword(errataMsg.get_payload())
 
             parsed_msg.errataDate = errataMsg.get("Date")
                     
@@ -225,6 +224,7 @@ class MessageParser(object):
             traceback.print_exc(file=sys.stdout)
 
         return None 
+
         
     
     #Performs parsing on the specified errata source. What this
@@ -267,30 +267,38 @@ def main():
         opt = XML.Element('opt')
         for advisory in parsed_messages:
             adv = XML.SubElement(opt, advisory.getAdvisoryName())
-            adv.set('description', advisory.errataDesc.strip())
+
+	    if advisory.errataDesc.strip() == "":
+		desc = "N/A"
+	    else:
+		desc = advisory.errataDesc.strip()
+
+            adv.set('description', desc)
             adv.set('synopsis', advisory.errataSynopsis)
             adv.set('release', '1')
             adv.set('product', 'Ubuntu Linux')
             adv.set('topic', 'N/A')
             adv.set('solution', 'N/A')
-            adv.set('notes', 'N/A')
-            if advisory.errataReboot != "":
-                adv.set('keywords', advisory.errataReboot)            
             adv.set('type', advisory.errataType)
             adv.set('references', advisory.errataReferences.strip())
 
             # add packages
-            for release in advisory.packages:
-                for package in advisory.packages[release]:
-                    pkg = XML.SubElement(adv, 'packages')
-                    #pkg.set('release', release)
-                    pkg.text = package.filename.strip() + '-' + package.version.strip() + '.amd64-deb.deb'
+	    if len(advisory.packages) == 0:
+	    	XML.SubElement(adv, 'packages')
+	    else:
+            	for release in advisory.packages:
+                   for package in advisory.packages[release]:
+                    	pkg = XML.SubElement(adv, 'packages')
+                    	#pkg.set('release', release)
+                    	pkg.text = package.filename.strip() + '-' + package.version.strip() + '.amd64-deb.deb'
 
             # add CVEs
             for cve in advisory.cves:
                 cves = XML.SubElement(adv, 'cves') 
                 cves.text = cve     
-
+	    
+            kw = XML.SubElement(adv, 'keywords')
+            kw.text = advisory.errataKeyword
         xml = XML.ElementTree(opt)
         xml.write("ubuntu-errata.xml")
 
