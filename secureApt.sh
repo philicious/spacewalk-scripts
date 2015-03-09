@@ -4,14 +4,16 @@
 # based on Packages and Packages.gz files
 # The created files make the repo a "signed" repo
 
+if [ "$1" = "" -o "$2" = "" ]; then echo "Usage: secureApt.sh DIST SUITE";exit 1;fi
+
 DATE=`date "+%a, %d %b %Y %H:%M:%S %z"`
 GPG_PASS='foobar'
 
 HEADER="Origin: Ubuntu
 Label: Ubuntu
-Suite: precise
+Suite: $2
 Version: 12.04
-Codename: precise
+Codename: $1
 Date: ${DATE}
 Architectures: amd64
 Components: repodata
