@@ -32,9 +32,13 @@ rm -rf Release
 echo -e "${HEADER}" > Release
 echo -e " ${PACKAGES_MD5}\t${PACKAGES_SIZE}\trepodata/binary-amd64/Packages" >> Release
 echo -e " ${PACKAGESGZ_MD5}\t${PACKAGESGZ_SIZE}\trepodata/binary-amd64/Packages.gz" >> Release
+echo -e " ${PACKAGES_MD5}\t${PACKAGES_SIZE}\trepodata/binary-i386/Packages" >> Release
+echo -e " ${PACKAGESGZ_MD5}\t${PACKAGESGZ_SIZE}\trepodata/binary-i386/Packages.gz" >> Release
 echo -e "SHA256:" >> Release
 echo -e " ${PACKAGES_SHA256}\t${PACKAGES_SIZE}\trepodata/binary-amd64/Packages" >> Release
 echo -e " ${PACKAGESGZ_SHA256}\t${PACKAGESGZ_SIZE}\trepodata/binary-amd64/Packages.gz" >> Release
+echo -e " ${PACKAGES_SHA256}\t${PACKAGES_SIZE}\trepodata/binary-i386/Packages" >> Release
+echo -e " ${PACKAGESGZ_SHA256}\t${PACKAGESGZ_SIZE}\trepodata/binary-i386/Packages.gz" >> Release
 
 # write the signature for Release file
 rm -rf Release.gpg
