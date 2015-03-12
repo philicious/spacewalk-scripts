@@ -42,6 +42,8 @@
 # 20141002 - Fixed --exclude-errata feature
 # 20141007 - Fixed supportedapi array (Thanks, Christian)
 # 20141023 - Added support for Ubuntu USN Errata
+# 20140224 - Added support for rebbot_suggested. 
+#            Mimicing spacewalk server incorrect naming converntions, to match all packages.
 #
 # To do:
 # - Add CVEs to Errata (using errata.set_details)     [ DONE! ]
@@ -455,9 +457,9 @@ foreach $advisory (sort(keys(%{$xml}))) {
     
     # Find package IDs mentioned in errata
     &find_packages($advisory);
-
-    # Create Errata Info hash
-    %erratainfo = ( "synopsis"         => "$xml->{$advisory}->{synopsis}",
+    
+# Create Errata Info hash
+%erratainfo = ( "synopsis"         => "$xml->{$advisory}->{synopsis}",
                     "advisory_name"    => "$advid",
                     "advisory_release" => int($xml->{$advisory}->{release}),
                     "advisory_type"    => "$xml->{$advisory}->{type}",
@@ -465,8 +467,8 @@ foreach $advisory (sort(keys(%{$xml}))) {
                     "topic"            => "$xml->{$advisory}->{topic}",
                     "description"      => "$xml->{$advisory}->{description}",
                     "references"       => "$xml->{$advisory}->{references}",
-                    "notes"            => "$xml->{$advisory}->{notes}",
-                    "solution"         => "$xml->{$advisory}->{solution}" );
+                    "notes"            => "N/A",
+                    "solution"         => "$xml->{$advisory}->{solution}");
 
     # Insert description from Red Hat OVAL file, if available (only for Security)
     if (defined($ovalid)) {
