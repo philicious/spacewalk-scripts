@@ -42,6 +42,7 @@
 # 20141002 - Fixed --exclude-errata feature
 # 20141007 - Fixed supportedapi array (Thanks, Christian)
 # 20141023 - Added support for Ubuntu USN Errata
+# 20150402 - Added support for API v16 (Spacewalk 2.3)
 #
 # To do:
 # - Add CVEs to Errata (using errata.set_details)     [ DONE! ]
@@ -62,8 +63,8 @@ import Text::Unidecode;
 import XML::Simple;
 
 # Version information
-my $version = "20141007";
-my @supportedapi = ( '10.9','10.11','11.00','11.1','12','13','13.0','14','14.0','15','15.0' );
+my $version = "20150402";
+my @supportedapi = ( '10.9','10.11','11.00','11.1','12','13','13.0','14','14.0','15','15.0','16','16.0' );
 
 # Spacewalk Version => API cheatsheet
 # 0.6 => 10.9  == TESTED
@@ -82,6 +83,7 @@ my @supportedapi = ( '10.9','10.11','11.00','11.1','12','13','13.0','14','14.0',
 # 2.0 => 13    == TESTED
 # 2.1 => 14    == TESTED
 # 2.2 => 15    == TESTED
+# 2.3 => 16    == TESTED
 
 # Variable declation
 $| = 1;
