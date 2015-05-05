@@ -31,8 +31,6 @@ for system in systems:
       collectedErrata[relevantErrata['id']] = thisErrata
 
 # post errata to Slack
-headers = {'content-type': 'application/json'}
-
 for errata in collectedErrata.itervalues(): 
   text = "Spacewalk Errata Alert: <%s/rhn/errata/details/Details.do?eid=%d|%s %s>" % (SATELLITE_URL, errata['id'], errata['name'], errata['synopsis'])
   text += "\n<%s/rhn/errata/details/SystemsAffected.do?eid=%d|Affecting %d systems> since %s" % (SATELLITE_URL, errata['id'], errata['systemCount'], errata['date'])
