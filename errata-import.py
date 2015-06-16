@@ -24,7 +24,7 @@ newpackages = [ ]
 cves = [ ]
 bug = [ ]
 client = ''
-publish = bool(1)
+publish = True
 channels = [ ]
 excludedChannels = ['precise', 'trusty']
 includedChannels = [ ]
@@ -63,6 +63,7 @@ def CreatePackageList(key):
 			packinfo = package["name"], package["version"], package["release"]
 			fullpack = sep.join(packinfo) + '.amd64-deb.deb'
 			packages.append([fullpack, package['id'], label])
+# packages.append([ '%s.amd64-deb.deb' % '-'.join(package["name"], package["version"], package["release"]), package['id'], label])
 				
 def getPackIds(key, packages):
 	for line in packages:
@@ -106,11 +107,7 @@ def createErratum(key, erratum, issue_date, erratainfo, keywords, packageids, cv
 
 def parseXML(filename):
 	print "[+] Retrieving data from %s" % filename
-	global erratum
-	global erratainfo
-	global newpackages
-	global cves
-	global issue_date
+	global erratum, erratainfo, newpackages, cves, issue_date
 	adv = xml.parse(filename).getroot()
 	for element in adv:
 		erratum = element.tag
@@ -129,6 +126,7 @@ def parseXML(filename):
 #Prepare struct for method create:http://www.spacewalkproject.org/documentation/api/2.3/handlers/ErrataHandler.html#create
 		erratainfo = {'synopsis': synopsis, 'advisory_name': erratum, 'advisory_release': release, 'advisory_type': advisory_type, 'product': product, 'topic': topic, 'description': description, 'references': references, 'notes': notes, 'solution': solution }
 #Retrieve subelements (cves/packages) for setDetails
+#[ p.text for p in adv.iter ('packages')]
 		for package in element.iter('packages'):
 			newpackages.append(package.text)
 		for cve in element.iter('cves'):
