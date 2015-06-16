@@ -4,11 +4,12 @@
 # 
 # Changelog:
 # 
+# 2015-06-12 - Include issue_date information (pandujar)
 # 2015-02-19 - Apply Reboot Information (C.Stehle)
 # 2015-02-10 - Fixed regression bug 
 # 2015-02-06 - Fixed bug when "Summary" missing in USN breaking import
 # 2015-01-28 - Fixed bug for USN with multiple sub-IDs breaking import 
-# 2014-10-31 - Initial working version 
+
 
 import email
 import re
@@ -216,6 +217,7 @@ class MessageParser(object):
             if parsed_msg is None:
                 return None
 
+            #Convert date into format ISO8601
             parsed_msg.errataDate = errataMsg.get("Date")
                     
             return parsed_msg
@@ -268,6 +270,7 @@ def main():
         for advisory in parsed_messages:
             adv = XML.SubElement(opt, advisory.getAdvisoryName())
             adv.set('description', advisory.errataDesc.strip())
+            adv.set('issue_date', advisory.errataDate)
             adv.set('synopsis', advisory.errataSynopsis)
             adv.set('release', '1')
             adv.set('product', 'Ubuntu Linux')
@@ -300,4 +303,4 @@ def main():
         sys.exit(2)        
 
 if __name__ == "__main__":
-    main()         
+    main()
