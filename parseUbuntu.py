@@ -9,7 +9,7 @@
 # 2015-02-10 - Fixed regression bug 
 # 2015-02-06 - Fixed bug when "Summary" missing in USN breaking import
 # 2015-01-28 - Fixed bug for USN with multiple sub-IDs breaking import 
-
+# 2014-10-31 - Initial working version 
 
 import email
 import re
