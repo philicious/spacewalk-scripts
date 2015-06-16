@@ -9,10 +9,15 @@ import xmlrpclib
 from datetime import datetime
 import xml.etree.cElementTree as xml
 
+#Config Settings#
 url = "http://localhost/rpc/api"
 login = "login"
 passwd = "password"
 filename = 'ubuntu-errata.xml'
+excludedChannels = ['precise', 'trusty'] # Scan all available channels except these ones
+includedChannels = [ ] # Only scan channels on this list
+#Config Settings#
+
 key = ''
 erratum = ''
 issue_date = ''
@@ -26,8 +31,6 @@ bug = [ ]
 client = ''
 publish = True
 channels = [ ]
-excludedChannels = ['precise', 'trusty']
-includedChannels = [ ]
 
 #xmlrpc connect to server and retrieve key
 def connect(url, login, passwd):
