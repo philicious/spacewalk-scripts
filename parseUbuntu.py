@@ -4,7 +4,7 @@
 # 
 # Changelog:
 # 
-# 2015-06-12 - Include issue_date information (pandujar)
+# 2015-06-17 - Include errataDate and errataFrom information (pandujar)
 # 2015-02-19 - Apply Reboot Information (C.Stehle)
 # 2015-02-10 - Fixed regression bug 
 # 2015-02-06 - Fixed bug when "Summary" missing in USN breaking import
@@ -26,6 +26,7 @@ class MessageAnnounce:
                  errata_severity=None,
                  errata_synopsis=None,
                  errata_date=None,
+                 errata_from=None,
                  errata_desc=None,
                  errata_reboot=None,
                  msg_subject=None,
@@ -39,6 +40,7 @@ class MessageAnnounce:
         self.errataYear = errata_year
         self.errataSynopsis = errata_synopsis
         self.errataDate = errata_date
+        self.errataFrom = errata_from
         self.errataDesc = errata_desc        
         self.errataReboot = errata_reboot
         self.messageSubject = msg_subject
@@ -217,8 +219,8 @@ class MessageParser(object):
             if parsed_msg is None:
                 return None
 
-            #Convert date into format ISO8601
             parsed_msg.errataDate = errataMsg.get("Date")
+            parsed_msg.errataFrom = errataMsg.get("From")
                     
             return parsed_msg
         except Exception, e:
@@ -271,6 +273,7 @@ def main():
             adv = XML.SubElement(opt, advisory.getAdvisoryName())
             adv.set('description', advisory.errataDesc.strip())
             adv.set('issue_date', advisory.errataDate)
+            adv.set('errataFrom', advisory.errataFrom)
             adv.set('synopsis', advisory.errataSynopsis)
             adv.set('release', '1')
             adv.set('product', 'Ubuntu Linux')
