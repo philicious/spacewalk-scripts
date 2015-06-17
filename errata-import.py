@@ -88,7 +88,7 @@ def getDetailsErratum(key, erratum):
 			print "[-] %s No related packages found: skipping" % erratum
 		else:
 			print "[+] Found %s packages related to %s: Publishing" % (len(packageids), erratum)
-			createErratum(key, erratum, issue_date, erratainfo, keywords, packageids, cves, publish, channels)	
+			createErratum(key, erratum, issue_date, erratainfo, keywords, packageids, cves, publish, list(set(channels)))	
 
 #Create and publish errata	
 def createErratum(key, erratum, issue_date, erratainfo, keywords, packageids, cves, publish, channels):
