@@ -116,6 +116,7 @@ def parseXML(filename):
 		erratum = element.tag
    		description = element.get('description')
    		issue_date = datetime.strptime(element.get('issue_date')[:-6], '%a, %d %b %Y %H:%M:%S')
+		errataFrom = element.get('errataFrom')
    		synopsis = element.get('synopsis')
    		release = int(element.get('release'))
    		product = element.get('product')
@@ -127,7 +128,7 @@ def parseXML(filename):
    		references = element.get('references')
 #erratainfo = element.attrib
 #Prepare struct for method create:http://www.spacewalkproject.org/documentation/api/2.3/handlers/ErrataHandler.html#create
-		erratainfo = {'synopsis': synopsis, 'advisory_name': erratum, 'advisory_release': release, 'advisory_type': advisory_type, 'product': product, 'topic': topic, 'description': description, 'references': references, 'notes': notes, 'solution': solution }
+		erratainfo = {'synopsis': synopsis, 'advisory_name': erratum, 'advisory_release': release, 'advisory_type': advisory_type, 'product': product, 'errataFrom': errataFrom, 'topic': topic, 'description': description, 'references': references, 'notes': notes, 'solution': solution }
 #Retrieve subelements (cves/packages) for setDetails
 #[ p.text for p in adv.iter ('packages')]
 		for package in element.iter('packages'):
