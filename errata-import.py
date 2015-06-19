@@ -3,6 +3,7 @@
 # Pedro Andujar || twitter: pandujar || email: @segfault.es || @digitalsec.net
 # 
 # Changelog:
+# 2015-06-19 - Limit description 4000 chars
 # 2015-06-17 - Workarround for Spacewalk bug (adding packages after create)
 # 2015-06-16 - Initial working version 
 
@@ -119,7 +120,7 @@ def parseXML(filename):
 			packageids = [ ]
 			channels = [ ]
 			erratum = element.tag
-   			description = element.get('description')
+   			description = element.get('description')[:4000]
    			issue_date = datetime.strptime(element.get('issue_date')[:-6], '%a, %d %b %Y %H:%M:%S')
 			errataFrom = element.get('errataFrom')
    			synopsis = element.get('synopsis')
