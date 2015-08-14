@@ -39,6 +39,7 @@ def connect(url, login, passwd):
 		print "[+] Connected to %s" % url
 	except Exception, e:
 		print "[-] Error connecting to %s: %s" % (url, e)
+		raise
 	
 def logout(key):
 	client.auth.logout(key)
@@ -144,6 +145,7 @@ def parseXML(filename):
 			getDetailsErratum(key, erratum)
 	except Exception, e:
 		print "[-] Error parsing %s: %s" % (filename, e)
+		raise
 		
 def main():
 	connect(url, login, passwd)
