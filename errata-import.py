@@ -3,10 +3,12 @@
 # Pedro Andujar || twitter: pandujar || email: @segfault.es || @digitalsec.net
 # 
 # Changelog:
+# 2015-08-25 - Fix to support python2.6
 # 2015-06-19 - Limit description 4000 chars
 # 2015-06-17 - Workarround for Spacewalk bug (adding packages after create)
 # 2015-06-16 - Initial working version 
 
+import sys
 import xmlrpclib
 from datetime import datetime
 import xml.etree.cElementTree as xml
@@ -39,7 +41,7 @@ def connect(url, login, passwd):
 		print "[+] Connected to %s" % url
 	except Exception, e:
 		print "[-] Error connecting to %s: %s" % (url, e)
-		raise
+		sys.exit(1)
 	
 def logout(key):
 	client.auth.logout(key)
@@ -145,7 +147,6 @@ def parseXML(filename):
 			getDetailsErratum(key, erratum)
 	except Exception, e:
 		print "[-] Error parsing %s: %s" % (filename, e)
-		raise
 		
 def main():
 	connect(url, login, passwd)
