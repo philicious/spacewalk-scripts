@@ -31,7 +31,7 @@ packages = [ ]
 bug = [ ]
 client = ''
 publish = True
-attempts = '1'
+attempts = 0
 
 #xmlrpc connect to server and retrieve key
 def connect(url, login, passwd):
@@ -112,9 +112,9 @@ def createErratum(key, erratum, issue_date, erratainfo, keywords, packageids, cv
 	except Exception, e:
 		print "[-] Error creating errata: %s" % e
 		global attempts
-                print "Reattempting %s" % attempts
-                while attempts < 4:
-                        attempts = +1
+                while attempts < 3:
+                        attempts += 1
+                        print "[x] Reattempt: %s" % attempts
                         createErratum(key, erratum, issue_date, erratainfo, keywords, packageids, cves, publish, channels)
 
 def parseXML(filename):
