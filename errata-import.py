@@ -146,9 +146,9 @@ def parseXML(filename):
 			erratainfo = {'synopsis': synopsis, 'advisory_name': erratum, 'advisory_release': release, 'advisory_type': advisory_type, 'product': product, 'errataFrom': errataFrom, 'topic': topic, 'description': description, 'references': references, 'notes': notes, 'solution': solution }
 #Retrieve subelements (cves/packages) for setDetails
 #[ p.text for p in adv.iter ('packages')]
-			for package in element.iter('packages'):
+			for package in element.findall('packages'):
 				newpackages.append(package.text)
-			for cve in element.iter('cves'):
+			for cve in element.findall('cves'):
 				cves.append(cve.text)
 			getDetailsErratum(key, erratum)
 	except Exception, e:
