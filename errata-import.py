@@ -3,7 +3,7 @@
 # Pedro Andujar || twitter: pandujar || email: @segfault.es || @digitalsec.net
 # 
 # Changelog:
-# 2015-08-25 - Fix to support python2.6
+# 2015-08-25 - Fix to support python2.6. Added reattempts
 # 2015-06-19 - Limit description 4000 chars
 # 2015-06-17 - Workarround for Spacewalk bug (adding packages after create)
 # 2015-06-16 - Initial working version 
@@ -31,6 +31,7 @@ packages = [ ]
 bug = [ ]
 client = ''
 publish = True
+attempts = '1'
 
 #xmlrpc connect to server and retrieve key
 def connect(url, login, passwd):
@@ -110,6 +111,11 @@ def createErratum(key, erratum, issue_date, erratainfo, keywords, packageids, cv
 		client.errata.addPackages(key, erratum, packageids)
 	except Exception, e:
 		print "[-] Error creating errata: %s" % e
+		global attempts
+                print "Reattempting %s" % attempts
+                while attempts < 4:
+                        attempts = +1
+                        createErratum(key, erratum, issue_date, erratainfo, keywords, packageids, cves, publish, channels)
 
 def parseXML(filename):
 	try:
