@@ -112,10 +112,12 @@ def createErratum(key, erratum, issue_date, erratainfo, keywords, packageids, cv
 	except Exception, e:
 		print "[-] Error creating errata: %s" % e
 		global attempts
-                while attempts < 3:
+                if attempts < 3:
                         attempts += 1
-                        print "[x] Reattempt: %s" % attempts
+                        print "[x] Reattemp: %s" % attempts
                         createErratum(key, erratum, issue_date, erratainfo, keywords, packageids, cves, publish, channels)
+                else:
+                        attempts = 0
 
 def parseXML(filename):
 	try:
