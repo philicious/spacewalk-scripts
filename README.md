@@ -6,3 +6,5 @@
 Its just a copy of https://github.com/spacewalkproject/spacewalk/tree/master/client/rhel/yum-rhn-plugin/actions
 - **spacewalk-errata.sh** is a Bash script which downloads the compressed security announces, calls parseUbuntu.py on them and finally calls errata-import.py to import the Errata. This script can be run as a Cronjob to automate things.
 - **errataToSlack.py** reports all errata affecting at least one system to a Slack channel or group
+- **getSystemUpdatesHistory.py** Lists all packages installed on a given node after a datetime or after X hours before now
+If no datetime is given, packages installed in past 24h are listed.
