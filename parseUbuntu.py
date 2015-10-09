@@ -210,15 +210,15 @@ class MessageParser(object):
             
             erratum_subject = stripNewLine.sub("",erratum_subject)            
             parsed_msg = self.processMessageSubject(erratum_subject)
+            
+            if parsed_msg is None:
+                return None
+
             parsed_msg.packages = self.processPackageList(errataMsg.get_payload())
             parsed_msg.errataDesc = self.processMessageSummary(errataMsg.get_payload())
             parsed_msg.errataReboot = self.processMessageReboot(errataMsg.get_payload())
             parsed_msg.errataReferences = self.processMessageReferences(errataMsg.get_payload())
             parsed_msg.cves = self.processMessageCVEs(errataMsg.get_payload())
-
-            if parsed_msg is None:
-                return None
-
             parsed_msg.errataDate = errataMsg.get("Date")
             parsed_msg.errataFrom = errataMsg.get("From")
                     
