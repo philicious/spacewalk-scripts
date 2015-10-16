@@ -9,10 +9,9 @@ DATE=`date +"%Y-%B"`
 # Fetches the errata data from ubuntu.com.
 rm -rf /opt/spacewalk-errata/errata/$DATE.txt
 rm -rf /opt/spacewalk-errata/errata/ubuntu-errata.xml
-wget -P  /opt/spacewalk-errata/errata https://lists.ubuntu.com/archives/ubuntu-security-announce/$DATE.txt.gz
+curl https://lists.ubuntu.com/archives/ubuntu-security-announce/$DATE.txt.gz > /opt/spacewalk-errata/errata/$DATE.txt.gz
 gunzip -f /opt/spacewalk-errata/errata/$DATE.txt.gz
 # Processes and imports the errata.
 cd /opt/spacewalk-errata/ && \
-/opt/spacewalk-errata/parseUbuntu.py errata/$DATE.txt && \
-mv ubuntu-errata.xml errata/ubuntu-errata.xml
-/opt/spacewalk-errata/errata-import.py >> /var/log/ubuntu-errata.log
+/opt/spacewalk-errata/parseUbuntu.py errata/$DATE.txt
+/opt/spacewalk-errata/errata-import.py 2>&1 | tee -a /var/log/ubuntu-errata.log
