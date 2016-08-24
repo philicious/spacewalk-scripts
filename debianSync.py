@@ -60,6 +60,8 @@ match = re.search(r'(.*debian\/)', url) # Debian repos store data under 'debian/
 repoRoot = match.group(1) if match else repoRoot
 match = re.search(r'(.*security\.debian\.org\/)', url) # security.debian repo stores data in /
 repoRoot = match.group(1) if match else repoRoot
+match = re.search(r'(.*postgresql.org\/pub\/repos\/apt\/)', url) # Postgres repos store data under 'pub/repos/apt/'
+repoRoot = match.group(1) if match else repoRoot
 
 print "INFO: Repo URL:  %s" % url
 print "INFO: Repo root: %s" % repoRoot
