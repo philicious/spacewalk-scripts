@@ -17,6 +17,9 @@ import traceback
 import sys
 import xml.etree.cElementTree as XML
 
+reload(sys)
+sys.setdefaultencoding('utf8')
+
 class MessageAnnounce:
 
     def __init__(self,
