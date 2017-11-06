@@ -4,6 +4,7 @@
 # 
 # Changelog:
 # 
+# 2017-11-06 - Set UTF-8 caracter encoding to import errata from Spacewalk correctly
 # 2015-06-17 - Include errataDate and errataFrom information (pandujar)
 # 2015-02-19 - Apply Reboot Information (C.Stehle)
 # 2015-02-10 - Fixed regression bug 
@@ -301,7 +302,7 @@ def main():
                 cves.text = cve     
 
         xml = XML.ElementTree(opt)
-        xml.write("ubuntu-errata.xml")
+        xml.write("ubuntu-errata.xml", encoding='utf-8')
 
     except Exception,e:
         print "Failed to parse messages due to exception %s" % e

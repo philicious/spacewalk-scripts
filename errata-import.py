@@ -3,12 +3,15 @@
 # Pedro Andujar || twitter: pandujar || email: @segfault.es || @digitalsec.net
 # 
 # Changelog:
+# 2017-11-06 - Set UTF-8 caracter encoding to import errata from Spacewalk correctly
 # 2015-08-25 - Fix to support python2.6. Added reattempts
 # 2015-06-19 - Limit description 4000 chars
 # 2015-06-17 - Workarround for Spacewalk bug (adding packages after create)
 # 2015-06-16 - Initial working version 
 
 import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 import xmlrpclib
 from datetime import datetime
 import xml.etree.cElementTree as xml
