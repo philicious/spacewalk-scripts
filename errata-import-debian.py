@@ -64,6 +64,10 @@ def connect(url, login, passwd):
     try:
         global client, key
         client = xmlrpclib.Server(url, verbose=0)
+        if login == '':
+            login = os.getenv('SW_USER', '')
+        if passwd == '':
+            passwd = os.getenv('SW_PASSWD', '')
         key = client.auth.login(login, passwd)
         log(1, "[+] Connected to %s" % url)
     except Exception, e:
