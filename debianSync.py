@@ -6,7 +6,7 @@
 # Its a drop-in replacement for https://github.com/stevemeier/spacewalk-debian-sync
 # meaning the arguments are the same.
 #
-# If you dont run it on your Spacewalk server, you need to edit SPACEWALK_URL
+# If you dont run it on your Spacewalk server, you need to pass URL via -s or --satellite_url
 #
 # Changelog:
 # 
@@ -26,12 +26,12 @@ from urllib import urlopen
 SATELLITE_URL = 'https://localhost'
 
 def printUsage():
-  print 'Usage: debianSync.py --url=REPO_URL --channel=SATELLITE_CHANNEL --username=SATELLITEUSER --password=SATELLITE_PASS'
-  print 'Usage: debianSync.py -r REPO_URL -c SATELLITE_CHANNEL -u SATELLITE_USER -p SATELLITE_PASS'
+  print 'Usage: debianSync.py --url=REPO_URL --channel=SATELLITE_CHANNEL --username=SATELLITEUSER --password=SATELLITE_PASS [--satellite_url=SATELLITE_URL]'
+  print 'Usage: debianSync.py -r REPO_URL -c SATELLITE_CHANNEL -u SATELLITE_USER -p SATELLITE_PASS [-s SATELLITE_URL]'
 
 # read arguments
 try:
-  opts, args = getopt.getopt(sys.argv[1:],"r:c:u:p:",["url=","channel=","username=","password="])
+  opts, args = getopt.getopt(sys.argv[1:],"s:r:c:u:p:",["satellite_url=","url=","channel=","username=","password="])
   if len(opts) < 4:
     printUsage()
     sys.exit(2)
@@ -48,6 +48,8 @@ for opt, arg in opts:
     SATELLITE_LOGIN = arg
   elif opt in ('-p','--password'):
     SATELLITE_PASSWORD = arg
+  elif opt in ('-s','--satellite_url'):
+    SATELLITE_URL = arg
   else:
     printUsage()
     sys.exit(2)    
