@@ -19,14 +19,17 @@ import os
 import errno
 from datetime import datetime
 import xml.etree.cElementTree as xml
-from optparse import OptionParser
+import argparse
 
 debug_level = 0
 
-parser = OptionParser()
-parser.add_option("-d", "--debug", action="store", dest="debug_level", type="int", help="set debug level")
+parser = argparse.ArgumentParser(description='Spacewalk errata import for Debian')
 
-(option, args) = parser.parse_args()
+parser.add_argument("-d", "--debug", type=int, dest="debug_level", help="set debug level")
+parser.add_argument("-i", "--included-channels", type=str, action="append", help="set included channels")
+parser.add_argument("-e", "--excluded-channels", type=str, action="append", help="set excluded channels")
+
+option = parser.parse_args()
 
 if option.debug_level is not None and option.debug_level > 0:
     debug_level = option.debug_level
@@ -58,6 +61,11 @@ bug = []
 publish = True
 attempts = 0
 
+if option.excluded_channels:
+   excludedChannels = option.excluded_channels
+
+if option.included_channels:
+   includedChannels = option.included_channels
 
 # xmlrpc connect to server and retrieve key
 def connect(url, login, passwd):
