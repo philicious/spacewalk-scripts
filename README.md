@@ -6,7 +6,7 @@ Spacewalk Debian Installer
 Copy and Past in your terminal :
 
 ```bash
-wget -Nnv https://raw.githubusercontent.com/liberodark/nrpe-installer/install.sh && chmod +x install.sh; ./install.sh
+wget -Nnv https://raw.githubusercontent.com/liberodark/spacewalk-scripts/install.sh && chmod +x install.sh; ./install.sh
 ```
 
 ## Plugins Configuration :
