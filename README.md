@@ -12,8 +12,11 @@ wget -Nnv https://raw.githubusercontent.com/liberodark/spacewalk-scripts/install
 ## Plugins Configuration :
 
 ```
-
-/usr/bin/spacewalk-repo-sync -c updates_centos_7_x86_64
+python getDebianAnnouncements.py
+sudo rmdir /tmp/debian_security/parsed
+python parseDebian.py
+python errata-import-debian.py
+/usr/bin/spacewalk-repo-sync -c jessie_main
 
 ```
 
@@ -34,7 +37,6 @@ For Debian 7.x
 ## Linux Compatibility :
 
 - Debian 7.x / 8.x / 9.x
-- Ubuntu 18.04
 
 
 ## Script informations :
