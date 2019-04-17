@@ -13,6 +13,8 @@ wget -Nnv https://raw.githubusercontent.com/liberodark/spacewalk-scripts/install
 
 ```
 
+/usr/bin/spacewalk-repo-sync -c updates_centos_7_x86_64
+
 ```
 
 ## Debian 6.x / 7.x
