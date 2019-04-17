@@ -12,6 +12,7 @@ wget -Nnv https://raw.githubusercontent.com/liberodark/spacewalk-scripts/install
 ## Plugins Configuration :
 
 ```
+yum install html2text
 yum install python-html2text
 python getDebianAnnouncements.py
 sudo rmdir /tmp/debian_security/parsed
