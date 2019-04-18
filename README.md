@@ -9,10 +9,22 @@ Copy and Past in your terminal :
 wget -Nnv https://raw.githubusercontent.com/liberodark/spacewalk-scripts/install.sh && chmod +x install.sh; ./install.sh
 ```
 
-## Plugins Configuration :
+For Centos 7
+
+- Download Scripts
 
 ```
-yum install html2text
+git clone https://github.com/liberodark/spacewalk-scripts
+```
+
+- Install
+
+```
+yum install -y html2text
+```
+
+
+```
 yum install python-html2text
 python getDebianAnnouncements.py
 sudo rmdir /tmp/debian_security/parsed
