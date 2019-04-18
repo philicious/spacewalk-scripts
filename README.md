@@ -39,7 +39,7 @@ passwd = 'MYPASSWORD' # Line 47
 
 ```
 mkdir -p /home/errata/spacewalk-scripts/
-cp -a * /home/errata/spacewalk-scripts/
+mv *.py /home/errata/spacewalk-scripts/
 ```
 
 
