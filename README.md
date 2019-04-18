@@ -30,7 +30,10 @@ cp -a spacewalk_sync_debian.cron /etc/cron.daily/spacewalk_sync_debian.cron
 
 - Edit errata-import-debian.py
 
-L46 = MYLOGIN and L47 = MYPASSWORD
+```
+login = 'MYLOGIN' # Line 46
+passwd = 'MYPASSWORD' # Line 47
+```
 
 - Install Files :
 
