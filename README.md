@@ -23,6 +23,24 @@ git clone https://github.com/liberodark/spacewalk-scripts
 yum install -y html2text
 ```
 
+```
+cd spacewalk-scripts/centos
+cp -a spacewalk_sync_debian.cron /etc/cron.daily/spacewalk_sync_debian.cron
+```
+
+- Edit errata-import-debian.py
+
+L46 = MYLOGIN and L47 = MYPASSWORD
+
+- Install Files :
+
+```
+mkdir -p /home/errata/spacewalk-scripts/
+cp -a * /home/errata/spacewalk-scripts/
+```
+
+
+## Manual Use
 
 ```
 python getDebianAnnouncements.py
