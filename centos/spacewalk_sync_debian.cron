@@ -20,7 +20,7 @@ trap "rm ${LOCKFILE}" EXIT
 
 
 #get errata file and checksums
-cd /home/errata/spacewalk-scripts-master/
+cd /home/errata/spacewalk-scripts/
 
 mkdir -p /tmp/debian_security/parsed
 python getDebianAnnouncements.py
