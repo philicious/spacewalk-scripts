@@ -19,7 +19,6 @@ sudo rmdir /tmp/debian_security/parsed
 python parseDebian.py
 python errata-import-debian.py
 /usr/bin/spacewalk-repo-sync -c jessie_main
-
 ```
 
 ## Debian 6.x / 7.x
