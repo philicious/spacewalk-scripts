@@ -43,8 +43,8 @@ includedChannels = ['wheezy_main',
 # Config Settings#
 
 url = 'http://localhost/rpc/api'
-login = 'errata'
-passwd = 'ObcTFUc3N2vV6R2ceFi9'
+login = 'MYLOGIN'
+passwd = 'MYPASSWORD'
 key = ''
 client = ''
 erratum = ''
