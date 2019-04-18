@@ -25,7 +25,6 @@ yum install -y html2text
 
 
 ```
-yum install python-html2text
 python getDebianAnnouncements.py
 sudo rmdir /tmp/debian_security/parsed
 python parseDebian.py
