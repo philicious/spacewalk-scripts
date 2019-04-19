@@ -67,7 +67,6 @@ echo "Install Script for Spacewalk"
       sed -i "s@MYLOGIN@${user}@@g" errata-import-debian.py
       sed -i "s@MYPASSWORD@${password}@@g" errata-import-debian.py
       #chmod 777
-      mv *.py /home/errata/spacewalk-scripts/
       
     fi
 fi
