@@ -20,4 +20,4 @@ cd /home/errata/spacewalk-scripts/
 
 python getDebianAnnouncements.py
 python parseDebian.py
-scp -r -p /tmp/debian_security ssh_user@ssh_ip:/tmp/debian_security
+sshpass -p "ssh_password" scp -r -p /tmp/debian_security ssh_user@ssh_ip:/tmp/debian_security

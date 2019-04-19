@@ -72,14 +72,15 @@ echo "Install Script for Spacewalk"
 
       echo "What is your ip of spacewalk ?"
       read ssh_ip
-      
+
       apt-get update
-      apt-get install -y html2text git cron
+      apt-get install -y html2text git sshpass
       mkdir -p /home/errata/spacewalk-scripts/
       git clone https://github.com/liberodark/spacewalk-scripts/
       mv spacewalk-scripts /home/errata/spacewalk-scripts
       cp -a spacewalk_errata_debian.cron /etc/cron.daily/spacewalk_errata_debian.cron
       sed -i "s@ssh_user@${ssh_user}@@g" /etc/cron.daily/spacewalk_errata_debian.cron
+      sed -i "s@ssh_password@${ssh_password}@@g" /etc/cron.daily/spacewalk_errata_debian.cron
       sed -i "s@ssh_ip@${ssh_ip}@@g" /etc/cron.daily/spacewalk_errata_debian.cron
       
     fi
