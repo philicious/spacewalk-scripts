@@ -64,11 +64,15 @@ echo "Install Script for Spacewalk"
       sed -i "s@MYPASSWORD@${password}@@g" /home/errata/spacewalk-scripts/errata-import-debian.py
 
     elif [[ "$distribution" =~ .Debian || "$distribution" = Debian || "$distribution" =~ .Ubuntu || "$distribution" = Ubuntu ]]; then
-      echo "What is your user of spacewalk ?"
+      echo "What is your ssh user of spacewalk ?"
       read ssh_user
 
-      echo "What is your password of spacewalk ?"
+      echo "What is your ssh password of spacewalk ?"
+      read ssh_password
+
+      echo "What is your ip of spacewalk ?"
       read ssh_ip
+      
       apt-get update
       apt-get install -y html2text git cron
       mkdir -p /home/errata/spacewalk-scripts/
