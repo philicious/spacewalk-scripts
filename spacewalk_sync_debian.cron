@@ -23,6 +23,5 @@ trap "rm ${LOCKFILE}" EXIT
 cd /home/errata/spacewalk-scripts/
 
 mkdir -p /tmp/debian_security/parsed
-python getDebianAnnouncements.py
-python parseDebian.py
 python errata-import-debian.py
+sudo rm -r /tmp/debian_security

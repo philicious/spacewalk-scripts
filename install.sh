@@ -59,14 +59,14 @@ echo "Install Script for Spacewalk"
   if [ $? != 1 ]; then
 
     if [[ "$distribution" =~ .CentOS || "$distribution" = CentOS ]]; then
-      yum install -y html2text wget
-      wget https://github.com/liberodark/spacewalk-scripts/releases/download/1.0/centos.tar.gz
-      tar -xvf centos.tar.gz & rm centos.tar.gz
-      cd centos/
+      yum install -y html2text git
+      mkdir -p /home/errata/spacewalk-scripts/
+      git clone https://github.com/liberodark/spacewalk-scripts/
+      mv spacewalk-scripts /home/errata/spacewalk-scripts
       cp -a spacewalk_sync_debian.cron /etc/cron.daily/spacewalk_sync_debian.cron
       sed -i "s@MYLOGIN@${user}@@g" errata-import-debian.py
       sed -i "s@MYPASSWORD@${password}@@g" errata-import-debian.py
-      mkdir -p /home/errata/spacewalk-scripts/
+      #chmod 777
       mv *.py /home/errata/spacewalk-scripts/
       
     fi
