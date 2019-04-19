@@ -85,14 +85,6 @@ mkdir -p /home/errata/spacewalk-scripts/
 mv spacewalk-scripts /home/errata/spacewalk-scripts
 ```
 
-
-## Manual Use
-
-```
-python errata-import-debian.py
-/usr/bin/spacewalk-repo-sync -c jessie_main
-```
-
 ## Debian 6.x / 7.x
 
 Save your source list :
