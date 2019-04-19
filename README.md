@@ -101,7 +101,8 @@ For Debian 7.x
 
 ## Linux Compatibility :
 
-- Debian 7.x / 8.x / 9.x
+- Debian 8.x / 9.x
+- Centos 7.x
 
 
 ## Script informations :
