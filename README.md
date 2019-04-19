@@ -9,6 +9,8 @@ Copy and Past in your terminal :
 wget -Nnv https://raw.githubusercontent.com/liberodark/spacewalk-scripts/install.sh && chmod +x install.sh; ./install.sh
 ```
 
+## How to use Manualy :
+
 For Centos 7
 
 - Download Scripts
