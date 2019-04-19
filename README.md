@@ -79,7 +79,7 @@ cp -a nano spacewalk_sync_debian.cron /etc/cron.daily/nano spacewalk_sync_debian
 ```
 nano errata-import-debian.py
 login = 'MYLOGIN' # Line 46
-passwd = 'MYPASSWORD' # Line 47
+password = 'MYPASSWORD' # Line 47
 ```
 
 - Install Files :
