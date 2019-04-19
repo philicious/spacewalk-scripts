@@ -9,7 +9,7 @@
 #=================================================
 
   update_source="https://raw.githubusercontent.com/liberodark/spacewalk-scripts/master/install.sh"
-  version="0.0.1"
+  version="0.0.4"
 
   echo "Welcome on Spacewalk Script Install $version"
 
