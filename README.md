@@ -2,8 +2,8 @@
 Spacewalk Script Installer 
 
 This script is for client / server installation.
-Centos = client and execute daily cron task for import errata and sync chanels.
-Debian = server and execute daily cron task for download errata and send on spacewalk.
+- Centos = client and execute daily cron task for import errata and sync chanels.
+- Debian = server and execute daily cron task for download errata and send on spacewalk.
 
 ## How to use :
 
