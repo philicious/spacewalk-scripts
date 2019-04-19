@@ -9,9 +9,26 @@ Copy and Past in your terminal :
 wget -Nnv https://raw.githubusercontent.com/liberodark/spacewalk-scripts/install.sh && chmod +x install.sh; ./install.sh
 ```
 
-## How to use Manualy :
+## How is work :
 
-For Centos 7
+For Centos 7 is a client
+
+Just install the script !
+
+For Debian 9 is a server
+
+Just install the script !
+need to make a first ssh connexion on your spacewalk from this debian
+
+## How is use manually :
+
+On Debian
+
+- Install
+
+```
+apt install -y html2text git
+```
 
 - Download Scripts
 
@@ -19,20 +36,44 @@ For Centos 7
 git clone https://github.com/liberodark/spacewalk-scripts
 ```
 
-- Install
+- Need to edit spacewalk_errata_debian.cron with ip / user / password
 
 ```
-yum install -y html2text
+nano spacewalk_errata_debian.cron
+cp -a spacewalk_errata_debian.cron /etc/cron.daily/spacewalk_errata_debian.cron
 ```
 
+- Install Files :
+
 ```
-cd spacewalk-scripts/centos
-cp -a spacewalk_sync_debian.cron /etc/cron.daily/spacewalk_sync_debian.cron
+mkdir -p /home/errata/spacewalk-scripts/
+mv spacewalk-scripts /home/errata/spacewalk-scripts
+```
+
+On Centos
+
+
+```
+yum install -y git
+```
+
+- Download Scripts
+
+```
+git clone https://github.com/liberodark/spacewalk-scripts
+```
+
+- Need to install file 
+
+```
+nano spacewalk_sync_debian.cron
+cp -a nano spacewalk_sync_debian.cron /etc/cron.daily/nano spacewalk_sync_debian.cron
 ```
 
 - Edit errata-import-debian.py
 
 ```
+nano errata-import-debian.py
 login = 'MYLOGIN' # Line 46
 passwd = 'MYPASSWORD' # Line 47
 ```
@@ -41,16 +82,13 @@ passwd = 'MYPASSWORD' # Line 47
 
 ```
 mkdir -p /home/errata/spacewalk-scripts/
-mv *.py /home/errata/spacewalk-scripts/
+mv spacewalk-scripts /home/errata/spacewalk-scripts
 ```
 
 
 ## Manual Use
 
 ```
-mkdir -p /tmp/debian_security/parsed
-python getDebianAnnouncements.py
-python parseDebian.py
 python errata-import-debian.py
 /usr/bin/spacewalk-repo-sync -c jessie_main
 ```
