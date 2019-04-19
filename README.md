@@ -48,8 +48,8 @@ mv *.py /home/errata/spacewalk-scripts/
 ## Manual Use
 
 ```
+mkdir -p /tmp/debian_security/parsed
 python getDebianAnnouncements.py
-sudo rmdir /tmp/debian_security/parsed
 python parseDebian.py
 python errata-import-debian.py
 /usr/bin/spacewalk-repo-sync -c jessie_main
