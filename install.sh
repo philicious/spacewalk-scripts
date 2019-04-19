@@ -34,16 +34,6 @@ fi ;
 if [[ $(id -u) -ne 0 ]] ; then echo "Please run as root" ; exit 1 ; fi
 
 #=================================================
-# IP
-#=================================================
-
-echo "What is your user of spacewalk ?"
-read user
-
-echo "What is your password of spacewalk ?"
-read password
-
-#=================================================
 # RETRIEVE ARGUMENTS FROM THE MANIFEST AND VAR
 #=================================================
 
@@ -59,21 +49,34 @@ echo "Install Script for Spacewalk"
   if [ $? != 1 ]; then
 
     if [[ "$distribution" =~ .CentOS || "$distribution" = CentOS ]]; then
+      echo "What is your user of spacewalk ?"
+      read user
+
+      echo "What is your password of spacewalk ?"
+      read password
+
       yum install -y html2text git
       mkdir -p /home/errata/spacewalk-scripts/
       git clone https://github.com/liberodark/spacewalk-scripts/
       mv spacewalk-scripts /home/errata/spacewalk-scripts
       cp -a spacewalk_sync_debian.cron /etc/cron.daily/spacewalk_sync_debian.cron
-      sed -i "s@MYLOGIN@${user}@@g" errata-import-debian.py
-      sed -i "s@MYPASSWORD@${password}@@g" errata-import-debian.py
+      sed -i "s@MYLOGIN@${user}@@g" /home/errata/spacewalk-scripts/errata-import-debian.py
+      sed -i "s@MYPASSWORD@${password}@@g" /home/errata/spacewalk-scripts/errata-import-debian.py
 
     elif [[ "$distribution" =~ .Debian || "$distribution" = Debian || "$distribution" =~ .Ubuntu || "$distribution" = Ubuntu ]]; then
+      echo "What is your user of spacewalk ?"
+      read ssh_user
+
+      echo "What is your password of spacewalk ?"
+      read ssh_ip
       apt-get update
       apt-get install -y html2text git cron
       mkdir -p /home/errata/spacewalk-scripts/
       git clone https://github.com/liberodark/spacewalk-scripts/
       mv spacewalk-scripts /home/errata/spacewalk-scripts
       cp -a spacewalk_errata_debian.cron /etc/cron.daily/spacewalk_errata_debian.cron
+      sed -i "s@ssh_user@${ssh_user}@@g" /etc/cron.daily/spacewalk_errata_debian.cron
+      sed -i "s@ssh_ip@${ssh_ip}@@g" /etc/cron.daily/spacewalk_errata_debian.cron
       
     fi
 fi
