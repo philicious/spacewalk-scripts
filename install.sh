@@ -66,7 +66,14 @@ echo "Install Script for Spacewalk"
       cp -a spacewalk_sync_debian.cron /etc/cron.daily/spacewalk_sync_debian.cron
       sed -i "s@MYLOGIN@${user}@@g" errata-import-debian.py
       sed -i "s@MYPASSWORD@${password}@@g" errata-import-debian.py
-      #chmod 777
+
+    elif [[ "$distribution" =~ .Debian || "$distribution" = Debian || "$distribution" =~ .Ubuntu || "$distribution" = Ubuntu ]]; then
+      apt-get update
+      apt-get install -y html2text git cron
+      mkdir -p /home/errata/spacewalk-scripts/
+      git clone https://github.com/liberodark/spacewalk-scripts/
+      mv spacewalk-scripts /home/errata/spacewalk-scripts
+      cp -a spacewalk_errata_debian.cron /etc/cron.daily/spacewalk_errata_debian.cron
       
     fi
 fi
