@@ -22,7 +22,7 @@ need to make a first ssh connexion on your spacewalk from this debian
 
 ## How is use manually :
 
-On Debian
+### On Debian
 
 - Install
 
@@ -50,7 +50,7 @@ mkdir -p /home/errata/spacewalk-scripts/
 mv spacewalk-scripts /home/errata/spacewalk-scripts
 ```
 
-On Centos
+### On Centos
 
 
 ```
