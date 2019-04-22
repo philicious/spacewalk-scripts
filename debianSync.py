@@ -95,7 +95,7 @@ syncedPkgCount = 0
 for pkg in pkgs.split('\n\n'):
   repoPkgCount += 1
   for pkginfos in pkg.split('\n'):
-    line = pkginfos.split(':')
+    line = pkginfos.split(':',1)
     if line[0] == 'Filename': 
       filename = line[1].strip()
     elif line[0] == 'MD5sum':
