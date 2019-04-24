@@ -49,11 +49,8 @@ echo "Install Script for Spacewalk"
   if [ $? != 1 ]; then
 
     if [[ "$distribution" =~ .CentOS || "$distribution" = CentOS ]]; then
-      echo "What is your user of spacewalk ?"
-      read user
-
-      echo "What is your password of spacewalk ?"
-      read password
+      read -p "What is your user of spacewalk ?" user
+      read -p "What is your password of spacewalk ?" password
 
       yum install -y html2text git
       mkdir -p /home/errata/spacewalk-scripts/
@@ -64,14 +61,9 @@ echo "Install Script for Spacewalk"
       sed -i "s@MYPASSWORD@${password}@@g" /home/errata/spacewalk-scripts/errata-import-debian.py
 
     elif [[ "$distribution" =~ .Debian || "$distribution" = Debian || "$distribution" =~ .Ubuntu || "$distribution" = Ubuntu ]]; then
-      echo "What is your ssh user of spacewalk ?"
-      read ssh_user
-
-      echo "What is your ssh password of spacewalk ?"
-      read ssh_password
-
-      echo "What is your ip of spacewalk ?"
-      read ssh_ip
+      read -p "What is your ssh user of spacewalk ?" ssh_user
+      read -p "What is your ssh password of spacewalk ?" ssh_password
+      read -p "What is your ip of spacewalk ?" ssh_ip
 
       apt-get update
       apt-get install -y html2text git sshpass
