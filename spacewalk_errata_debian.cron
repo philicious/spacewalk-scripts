@@ -1,0 +1,23 @@
+MAILTO=root
+
+# try to create the lock and check the outcome
+LOCKFILE=/var/run/spacewalk_errata_debian.lock
+#lockfile -r 0 ${LOCKFILE} 1>/dev/null 2>&1
+#status=$?
+#if [ ${status} -ne 0 ] ;then
+if [ -e "$LOCKFILE" ]; then
+        echo "Another instance already running. Aborting."
+        exit 1
+else
+    	touch "$LOCKFILE"
+fi
+trap "rm ${LOCKFILE}" EXIT
+
+
+#get errata file and checksums
+cd /home/errata/spacewalk-scripts/
+
+
+python getDebianAnnouncements.py
+python parseDebian.py
+sshpass -p "ssh_password" scp -r -p /tmp/debian_security ssh_user@ssh_ip:/tmp/debian_security

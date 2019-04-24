@@ -1,0 +1,27 @@
+MAILTO=root
+
+# try to create the lock and check the outcome
+LOCKFILE=/var/run/spacewalk_sync_debian.lock
+#lockfile -r 0 ${LOCKFILE} 1>/dev/null 2>&1
+#status=$?
+#if [ ${status} -ne 0 ] ;then
+if [ -e "$LOCKFILE" ]; then
+        echo "Another instance already running. Aborting."
+        exit 1
+else
+    	touch "$LOCKFILE"
+fi
+trap "rm ${LOCKFILE}" EXIT
+
+#sync channels and publish updates
+/usr/bin/spacewalk-repo-sync -c wheezy_main
+/usr/bin/spacewalk-repo-sync -c jessie_main
+/usr/bin/spacewalk-repo-sync -c stretch_main
+
+
+#get errata file and checksums
+cd /home/errata/spacewalk-scripts/
+
+mkdir -p /tmp/debian_security/parsed
+python errata-import-debian.py
+sudo rm -r /tmp/debian_security
